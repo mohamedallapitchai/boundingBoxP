@@ -64,14 +64,14 @@ object BoundingBoxHelpers {
       val sortedKeys = groupByRow.keys.toList.sorted
       val maxRowKey = sortedKeys.last
       val minRowKey = sortedKeys.head
-      println(s"maxRowKey is ${maxRowKey}")
-      println(s"minRowKey is ${minRowKey}")
+      //println(s"maxRowKey is ${maxRowKey}")
+      //println(s"minRowKey is ${minRowKey}")
       val breadth = maxRowKey - minRowKey
-      println(s"breadth is ${breadth}")
+      //println(s"breadth is ${breadth}")
       val maxRowMaxCol = groupByRow(maxRowKey).sorted((pt1, pt2) => pt1.column - pt2.column).last.column
       val minRowMinCol = groupByRow(minRowKey).sorted((pt1, pt2) => pt1.column - pt2.column).head.column
       val length = maxRowMaxCol - minRowMinCol
-      println(s"length is ${length}")
+      //println(s"length is ${length}")
       // val groupByRowSorted = groupByRow.maxBy((key,_) => )
       // val breadth = groupByRow.  //._1 - groupByRow.min._1
       //val length = groupByRow.max._2 - groupByRow.min._2
@@ -81,7 +81,7 @@ object BoundingBoxHelpers {
        val breadthPoints = list.sorted((pt1, pt2) => pt1.row - pt2.row)
        val breadth = breadthPoints.last.row - breadthPoints.head.row*/
       val area = length * breadth
-      println(s"area is ${area}")
+      //println(s"area is ${area}")
       area
     }
   }
@@ -126,8 +126,8 @@ object BoundingBoxHelpers {
   def checkNotOverlap(boxLeft: Int, boxRight: Int, boxTop: Int,
                       boxBottom: Int, otherBoxLeft: Int, otherBoxRight: Int, otherBoxTop: Int,
                       otherBoxBottom: Int): Boolean = {
-    println(s"${boxTop}, ${boxLeft}, ${boxBottom}, ${boxRight}, and other box: ${otherBoxTop}, ${otherBoxLeft}," +
-      s"${otherBoxBottom}, ${otherBoxRight}")
+    /*println(s"${boxTop}, ${boxLeft}, ${boxBottom}, ${boxRight}, and other box: ${otherBoxTop}, ${otherBoxLeft}," +
+      s"${otherBoxBottom}, ${otherBoxRight}")*/
     boxRight <= otherBoxLeft || otherBoxRight <= boxLeft || boxBottom <= otherBoxTop || boxTop >= otherBoxBottom
 
   }
