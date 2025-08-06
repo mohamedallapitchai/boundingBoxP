@@ -57,8 +57,8 @@ object BoundingBoxHelpers {
   }
 
   
-  def findArea(list: Box): Int = {
-    if (list.length <= 1) 0
+  def findArea(list: Box): (List[Point],Int) = {
+    if (list.length <= 1) (Nil, 0)
     else {
       val groupByRow: Map[Int, List[Point]] = list.groupBy(pt => pt.row)
       val sortedKeys = groupByRow.keys.toList.sorted
@@ -70,7 +70,27 @@ object BoundingBoxHelpers {
       //println(s"breadth is ${breadth}")
       val maxRowMaxCol = groupByRow(maxRowKey).sorted((pt1, pt2) => pt1.column - pt2.column).last.column
       val minRowMinCol = groupByRow(minRowKey).sorted((pt1, pt2) => pt1.column - pt2.column).head.column
-      val length = maxRowMaxCol - minRowMinCol
+      
+      val keyPoint = Point(minRowKey, minRowMinCol)
+      // now create a list which excludes this point
+      val exclusiveList = list.filter(p => p != keyPoint)
+      
+      // good now, for each point in exclusive list find the area between this point and the keyPoint
+      // just retain the point which gives maximum area
+      
+      val listAreaTup = exclusiveList.foldLeft(List(keyPoint),0) {
+        case (lat, pt) =>
+          val b = pt.row - minRowKey
+          val l = pt.column - minRowMinCol
+          val area = b * l
+          if (area >= lat._2)
+            (pt::lat._1, area)
+          else
+            lat
+      }
+      listAreaTup
+      
+      /*val length = maxRowMaxCol - minRowMinCol
       //println(s"length is ${length}")
       // val groupByRowSorted = groupByRow.maxBy((key,_) => )
       // val breadth = groupByRow.  //._1 - groupByRow.min._1
@@ -82,7 +102,7 @@ object BoundingBoxHelpers {
        val breadth = breadthPoints.last.row - breadthPoints.head.row*/
       val area = length * breadth
       //println(s"area is ${area}")
-      area
+      area*/
     }
   }
 

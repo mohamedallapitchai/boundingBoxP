@@ -31,10 +31,10 @@ object BoundingBox {
     //println(s"finxMaxAreaBoxCoordinates ${list}")
     val pointAndArea = list.foldLeft(Nil: List[Box], 0) {
       case (zeroArea, sublist) =>
-        val area = findArea(sublist)
+        val (ls, area) = findArea(sublist)
         if (area > zeroArea._2)
-          (List(sublist), area)
-        else if (area == zeroArea._2) (sublist :: zeroArea._1, area)
+          (List(ls), area)
+        else if (area == zeroArea._2) (ls :: zeroArea._1, area)
         else zeroArea
     }
     if (pointAndArea._2 == 0) {
@@ -43,10 +43,19 @@ object BoundingBox {
       Some(generatedPair)
     }
     else {
-      val sortedPoints: List[Box] = pointAndArea._1.map(bx => bx.sorted((pt1, pt2) => pt1.row - pt2.row))
+      //println(pointAndArea._1)
+      val sortedPoints: List[Box] = pointAndArea._1.map(bx => bx.sorted((pt1, pt2) => doSortByRowAndCol(pt1, pt2)))
+      //println(sortedPoints)
       val onlyMinAndMax: List[Box] = sortedPoints.map(bx => List(bx.head, bx.last))
       Some(onlyMinAndMax)
     }
+  }
+
+  def doSortByRowAndCol(pt1:Point, pt2:Point):Int = {
+    if (pt1.row == pt2.row)
+      pt1.column - pt2.column
+    else
+      pt1.row - pt2.row
   }
 
   def open(path: String) = new File(path)
